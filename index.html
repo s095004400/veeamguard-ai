@@ -98,7 +98,7 @@ const inputEl = document.getElementById('input');
 const sendBtn = document.getElementById('sendBtn');
 
 function addMessage(role, content) {
-  if (role !== 'system') history.push({ role: role === 'ai' ? 'model' : 'user', parts: [{ text: content }] });
+  if (role === 'user' || role === 'ai') history.push({ role: role === 'ai' ? 'model' : 'user', parts: [{ text: content }] });
   const div = document.createElement('div');
   div.className = `message ${role}`;
   const avatar = document.createElement('div');
@@ -142,7 +142,7 @@ async function sendMessage(text) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents: history.slice(0, -1),
+        contents: history,
         generationConfig: { maxOutputTokens: 1024 }
       })
     });
